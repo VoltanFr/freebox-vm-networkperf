@@ -16,7 +16,7 @@ On obtient alors deux fichiers :
 
 - Dans la clé SSH sur la Freebox à la création de la VM, je colle le contenu du fichier SSHKey.pub (pas la deuxième ligne qui est vide)
 - Nom de la VM : `VinceAttempt4`
-- Pour s'y connecter : `ssh -i "C:\BackedUp\DocsBV\Synchronized\SkyDrive\Vincent\VM Freebox\SSHKey" vince@192.168.1.128`
+- Pour s'y connecter : `ssh -i "C:\BackedUp\DocsBV\Synchronized\SkyDrive\Vincent\Clé SSH\SSHKey" vince@192.168.1.128`
 
 # Installation du CLI de SpeedTest
 - https://www.speedtest.net/fr/apps/cli
@@ -29,6 +29,7 @@ sudo apt install smbclient
 - Free ne supporte que SMBv1.
 - `sudo mkdir -p /mnt/freebox`
 - `sudo mount -t cifs -o guest,vers=1.0,uid=1000,gid=1000 //192.168.1.254/Freebox /mnt/freebox`
+- Chemin réseau sur intranet : `\\freebox\Freebox\VMs`
 
 # Faire tourner SpeedTest avec envoi de la sortie dans le point de montage
 Une première fois pour générer avec la ligne de titres de colonnes
@@ -38,5 +39,6 @@ Puis modifier ce fichier à la main pour insérer dans la première ligne une co
 # Faire tourner SpeedTest régulièrement
 - Installation de Cron: `apt-get install cron`
 - pour éditer le crontab: `crontab -e`
-- Executer speedtest toutes les 5 minutes, mettre ça dans le crontab : `*/5 * * * * echo $(date '+\%Y-\%m-\%d \%H:\%M:\%S'),"$(speedtest --format=csv)" >> /mnt/freebox/VMs/speedtest.csv`
+- Executer speedtest toutes les 5 minutes, mettre ça dans le crontab : `*/5 * * * * echo $(date '+\%Y-\%m-\%d \%H:\%M:\%S'),"$(speedtest --server-id=26387 --format=csv)" >> /mnt/freebox/VMs/speedtest.csv`
+- Il m'est arrivé de perdre le montage du répertoire, donc je mets aussi ça dans le crontab : `*/5 * * * * sudo mount -t cifs -o guest,vers=1.0,uid=1000,gid=1000 //192.168.1.254/Freebox /mnt/freebox`
 - Si besoin de débugger les exécutions de cron, ajouter ça au début du fichier crontab : `MAILTO=mahonv@gmail.com` (semble ne pas marcher)
